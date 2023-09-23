@@ -13,10 +13,15 @@ function App() {
     .then(data => setArr(data.jobsData))
   }, [])
   function jobSaving(data) {
-    console.log(saved.includes(data));
-    if (saved.includes(data)) {alert('already applied!'); document.getElementById(`${data.id}`).disabled = 'disabled'; return}
+    document.getElementById(`a${data.id}`).removeAttribute("class");
+    document.getElementById(`${data.id}`).setAttribute('class', 'hide');
     const arr = [...saved, data];
     setSaved(arr);
+  }
+  function jobRemoving(data) {
+    document.getElementById(`a${data.id}`).setAttribute('class', 'hide');
+    document.getElementById(`${data.id}`).removeAttribute("class");
+    setSaved(saved.filter(x => x !== data));
   }
   return (
     <>
@@ -45,7 +50,7 @@ function App() {
       {saved.map(x => <p key={x.id}>applied for job no - {x.id}</p>)}
       <div>
         {
-          arr.map(x => <p key={x.id}><button id={x.id} onClick={() => {jobSaving(x);}} type='button'>job no - {x.id}</button></p>)
+          arr.map(x => <p key={x.id}><button id={x.id} onClick={() => {jobSaving(x);}} type='button'>apply for job no - {x.id}</button><button className='hide' id={'a' + x.id} onClick={() => {jobRemoving(x);}} type='button'>cancel job no - {x.id}</button></p>)
         }
       </div>
     </>
